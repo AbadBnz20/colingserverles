@@ -21,7 +21,7 @@ namespace Coling.API.Curriculum.EndPoints
         }
 
         [Function("InsertarInstitucion")]
-        public async Task<HttpResponseData> InsertarInstitucion([HttpTrigger(AuthorizationLevel.Function, "post",Route ="insertarinstitucion")] HttpRequestData req)
+        public async Task<HttpResponseData> InsertarInstitucion([HttpTrigger(AuthorizationLevel.Anonymous, "post",Route ="insertarinstitucion")] HttpRequestData req)
         {
             HttpResponseData respuesta;
             try
@@ -48,7 +48,7 @@ namespace Coling.API.Curriculum.EndPoints
             }
         }
         [Function("ListarInstitucion")]
-        public async Task<HttpResponseData> ListarInstitucion([HttpTrigger(AuthorizationLevel.Function, "get",Route ="listarinstitucion")] HttpRequestData req)
+        public async Task<HttpResponseData> ListarInstitucion([HttpTrigger(AuthorizationLevel.Anonymous, "get",Route ="listarinstitucion")] HttpRequestData req)
         {
             HttpResponseData respuesta;
             try
@@ -65,7 +65,7 @@ namespace Coling.API.Curriculum.EndPoints
             }
         }
         [Function("EliminarInstitucion")]
-        public async Task<HttpResponseData> EliminarInstitucion([HttpTrigger(AuthorizationLevel.Function, "get", Route = "eliminarinstitucion")] HttpRequestData req)
+        public async Task<HttpResponseData> EliminarInstitucion([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "eliminarinstitucion")] HttpRequestData req)
         {
             HttpResponseData respuesta;
             string partitionkey = req.Query["partitionkey"];
@@ -92,7 +92,7 @@ namespace Coling.API.Curriculum.EndPoints
             }
         }
         [Function("ObtenerInstitucion")]
-        public async Task<HttpResponseData> ObtenerInstitucion([HttpTrigger(AuthorizationLevel.Function, "get", Route = "obtenerInstitucion")] HttpRequestData req)
+        public async Task<HttpResponseData> ObtenerInstitucion([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "obtenerInstitucion")] HttpRequestData req)
         {
             HttpResponseData respuesta;
             string ID = req.Query["idInstitucion"];
@@ -111,7 +111,7 @@ namespace Coling.API.Curriculum.EndPoints
         }
 
         [Function("EditarInstitucion")]
-        public async Task<HttpResponseData> EditarInstitucion([HttpTrigger(AuthorizationLevel.Function, "post", Route = "editarinstitucion")] HttpRequestData req)
+        public async Task<HttpResponseData> EditarInstitucion([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "editarinstitucion")] HttpRequestData req)
         {
             HttpResponseData respuesta;
             try

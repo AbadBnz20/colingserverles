@@ -3,7 +3,9 @@
     "Coling.API.BolsaTrabajo": {
       "commandName": "Project",
       "commandLineArgs": "--port 7152",
-      "launchBrowser": false
+      "environmentVariables": {
+        "ConexionMongo": "mongodb+srv://abad:ubld26Sgz7ARCt62@clousterbd.v2j0wcb.mongodb.net/"
+      }
     }
   }
 }
