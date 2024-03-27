@@ -11,29 +11,26 @@ using System.Net;
 
 namespace Coling.API.BolsaTrabajo.End_Point
 {
-    public class SolicitudFunction
+    public class OfertaLaboralFunction
     {
-        private readonly ILogger<SolicitudFunction> _logger;
-        private readonly ISolicitudRepositorio repos;
-        public SolicitudFunction(ILogger<SolicitudFunction> logger,ISolicitudRepositorio repos)
+        private readonly ILogger<OfertaLaboralFunction> _logger;
+        private readonly IOfertaLaboralRepositorio repos;
+        public OfertaLaboralFunction(ILogger<OfertaLaboralFunction> logger, IOfertaLaboralRepositorio repos)
         {
             _logger = logger;
             this.repos = repos;
         }
 
-        [Function("InsertarSolicitud")]
-        [OpenApiOperation("insertar", "Solicitud", Description = "Sirve para insertar Solicitud")]
-        [OpenApiRequestBody("application/json", typeof(Solicitud),
-           Description = "Solicitud modelo")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json",
-            bodyType: typeof(Solicitud),
-            Description = "Mostrara  la Solicitud insertado")]
-        public async Task<HttpResponseData> InsertarSolicitud([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "insertarsolicitud")] HttpRequestData req)
+        [Function("InsertarOfertaLaboral")]
+        [OpenApiOperation("insertar", "OfertaLaboral", Description = "Sirve para insertar OfertaLaboral")]
+        [OpenApiRequestBody("application/json", typeof(OfertaLaboral),
+           Description = "OfertaLaboral modelo")]
+        public async Task<HttpResponseData> InsertarOfertaLaboral([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "insertarofertalaboral")] HttpRequestData req)
         {
             HttpResponseData respuesta;
             try
             {
-                var registro = await req.ReadFromJsonAsync<Solicitud>() ?? throw new Exception("Debe ingresar una Solicitud con todos sus datos");
+                var registro = await req.ReadFromJsonAsync<OfertaLaboral>() ?? throw new Exception("Debe ingresar una Oferta Laboral con todos sus datos");
                 bool sw = await repos.Create(registro);
                 if (sw)
                 {
@@ -52,12 +49,12 @@ namespace Coling.API.BolsaTrabajo.End_Point
                 return respuesta;
             }
         }
-        [Function("ListarSolicitud")]
-        [OpenApiOperation("listar", "Solicitud", Description = "Sirve para insertar Solicitud")]
+        [Function("ListarOfertaLaboral")]
+        [OpenApiOperation("listar", "OfertaLaboral", Description = "Sirve para insertar OfertaLaboral")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json",
-            bodyType: typeof(List<Solicitud>),
-            Description = "Mostrara una lista de solicitudes")]
-        public async Task<HttpResponseData> ListarSolicitud([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "listarsolicitud")] HttpRequestData req)
+            bodyType: typeof(List<OfertaLaboral>),
+            Description = "Mostrara una lista de OfertaLaboral")]
+        public async Task<HttpResponseData> ListarOfertaLaboral([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "listarofertalaboral")] HttpRequestData req)
         {
             HttpResponseData respuesta;
             try
@@ -73,16 +70,16 @@ namespace Coling.API.BolsaTrabajo.End_Point
                 return respuesta;
             }
         }
-        [Function("ObtenerSolicitud")]
-        [OpenApiOperation("obtener", "Solicitud", Description = "Sirve para obtener una Solicitud")]
+        [Function("ObtenerOfertaLaboral")]
+        [OpenApiOperation("obtener", "OfertaLaboral", Description = "Sirve para obtener una OfertaLaboral")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json",
-            bodyType: typeof(Solicitud),
-            Description = "Mostrara una lista de Producto")]
-        [OpenApiParameter(name: "idSolicitud", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "El idSolicitud del Solicitud")]
-        public async Task<HttpResponseData> ObtenerSolicitud([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "obtenersolicitud")] HttpRequestData req)
+            bodyType: typeof(OfertaLaboral),
+            Description = "Mostrara una lista de OfertaLaboral")]
+        [OpenApiParameter(name: "idOfertaLaboral", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "El idOfertaLaboral del OfertaLaboral")]
+        public async Task<HttpResponseData> ObtenerOfertaLaboral([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "obtenerofertalaboral")] HttpRequestData req)
         {
             HttpResponseData respuesta;
-            string ID = req.Query["idSolicitud"];
+            string ID = req.Query["idOfertaLaboral"];
             try
             {
                 var lista = repos.Get(ID);
@@ -96,17 +93,17 @@ namespace Coling.API.BolsaTrabajo.End_Point
                 return respuesta;
             }
         }
-        [Function("EliminarSolicitud")]
-        [OpenApiOperation("Eliminar", "Solicitud", Description = "Sirve para eliminar una Solicitud")]
+        [Function("EliminarOfertaLaboral")]
+        [OpenApiOperation("Eliminar", "OfertaLaboral", Description = "Sirve para eliminar una OfertaLaboral")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json",
             bodyType: typeof(void),
             Description = " eliminar Producto")]
-        [OpenApiParameter(name: "idSolicitud", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "El idSolicitud del Solicitud")]
-        public async Task<HttpResponseData> EliminarSolicitud([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "eliminarsolicitud")] HttpRequestData req)
+        [OpenApiParameter(name: "idOfertaLaboral", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "El idOfertaLaboral del OfertaLaboral")]
+        public async Task<HttpResponseData> EliminarOfertaLaboral([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "eliminarofertalaboral")] HttpRequestData req)
         {
             HttpResponseData respuesta;
-            string ID = req.Query["idSolicitud"];
-           
+            string ID = req.Query["idOfertaLaboral"];
+
 
             try
             {
@@ -128,21 +125,21 @@ namespace Coling.API.BolsaTrabajo.End_Point
                 return respuesta;
             }
         }
-        [Function("EditarSolicitud")]
-        [OpenApiOperation("Editar", "Solicitud", Description = "Sirve para editar una Solicitud")]
-        [OpenApiRequestBody("application/json", typeof(Solicitud),
-           Description = "Producto modelo")]
+        [Function("EditarOfertaLaboral")]
+        [OpenApiOperation("Editar", "OfertaLaboral", Description = "Sirve para editar una OfertaLaboral")]
+        [OpenApiRequestBody("application/json", typeof(OfertaLaboral),
+           Description = "OfertaLaboral modelo")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json",
             bodyType: typeof(void),
             Description = " editar Producto")]
-        [OpenApiParameter(name: "idSolicitud", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "El idSolicitud del Solicitud")]
-        public async Task<HttpResponseData> EditarSolicitud([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "editarsolicitud")] HttpRequestData req)
+        [OpenApiParameter(name: "idOfertaLaboral", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "El idOfertaLaboral del Solicitud")]
+        public async Task<HttpResponseData> EditarOfertaLaboral([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "editarofertalaboral")] HttpRequestData req)
         {
             HttpResponseData respuesta;
             try
             {
-                var registro = await req.ReadFromJsonAsync<Solicitud>() ?? throw new Exception("Debe ingresar una Solicitud con todos sus datos");
-                string ID = req.Query["idSolicitud"];
+                var registro = await req.ReadFromJsonAsync<OfertaLaboral>() ?? throw new Exception("Debe ingresar una oferta laboral con todos sus datos");
+                string ID = req.Query["idOfertaLaboral"];
                 bool sw = await repos.Update(registro, ID);
                 if (sw)
                 {

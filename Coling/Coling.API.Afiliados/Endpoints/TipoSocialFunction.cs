@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using System.Net;
 
 namespace Coling.API.Afiliados.Endpoints
@@ -21,6 +23,10 @@ namespace Coling.API.Afiliados.Endpoints
         }
 
         [Function("ListarTipoSocial")]
+        [OpenApiOperation("listar", "TipoSocial", Description = "Sirve para insertar")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json",
+            bodyType: typeof(List<TipoSocial>),
+            Description = "Mostrara una lista")]
         public async Task<HttpResponseData> ListarTipoSocial([HttpTrigger(AuthorizationLevel.Function, "get", Route = "listartiposocial")] HttpRequestData req)
         {
             var listardireccion = tipoSocialLogic.ListarTipoSocial();
@@ -29,6 +35,9 @@ namespace Coling.API.Afiliados.Endpoints
             return respuesta;
         }
         [Function("InsertarTipoSocial")]
+        [OpenApiOperation("insertar", "TipoSocial", Description = "Sirve para insertar")]
+        [OpenApiRequestBody("application/json", typeof(TipoSocial),
+           Description = "Modelo")]
         public async Task<HttpResponseData> InserterTipoSocial([HttpTrigger(AuthorizationLevel.Function, "post", Route = "insertartiposocial")] HttpRequestData req)
         {
             try
@@ -50,6 +59,11 @@ namespace Coling.API.Afiliados.Endpoints
             }
         }
         [Function("EliminarTipoSocial")]
+        [OpenApiOperation("Eliminar", "TipoSocial", Description = "Sirve para eliminar")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json",
+            bodyType: typeof(void),
+            Description = " eliminara")]
+        [OpenApiParameter(name: "idTiposocial", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "El idTiposocial")]
         public async Task<HttpResponseData> EliminarTipoSocial([HttpTrigger(AuthorizationLevel.Function, "get", Route = "eliminartiposocial")] HttpRequestData req)
         {
             try
@@ -72,6 +86,10 @@ namespace Coling.API.Afiliados.Endpoints
 
         }
         [Function("EditarTipoSocial")]
+        [OpenApiOperation("editar", "TipoSocial", Description = "Sirve para obtener")]
+        [OpenApiRequestBody("application/json", typeof(TipoSocial),
+           Description = "Modelo")]
+        [OpenApiParameter(name: "idTiposocial", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "El idTiposocial")]
         public async Task<HttpResponseData> EditarTipoSocial([HttpTrigger(AuthorizationLevel.Function, "post", Route = "editartiposocial")] HttpRequestData req)
         {
             try
@@ -96,6 +114,11 @@ namespace Coling.API.Afiliados.Endpoints
             }
         }
         [Function("ObtenerTipoSocial")]
+        [OpenApiOperation("obtener", "TipoSocial", Description = "Sirve para obtener")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json",
+            bodyType: typeof(TipoSocial),
+            Description = "Mostrara un objeto")]
+        [OpenApiParameter(name: "idTiposocial", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "El idTiposocial")]
         public async Task<HttpResponseData> ObtenerTipoSocial([HttpTrigger(AuthorizationLevel.Function, "get", Route = "obtenertiposocial")] HttpRequestData req)
         {
             string ID = req.Query["idTiposocial"];

@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using System.Net;
 
 namespace Coling.API.Afiliados.Endpoints
@@ -21,6 +23,10 @@ namespace Coling.API.Afiliados.Endpoints
         }
 
         [Function("ListarDirecciones")]
+        [OpenApiOperation("listar", "Direccion", Description = "Sirve para insertar")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json",
+            bodyType: typeof(List<Direccion>),
+            Description = "Mostrara una lista")]
         public async Task<HttpResponseData> ListarDirecciones([HttpTrigger(AuthorizationLevel.Function, "get", Route = "listardirecciones")] HttpRequestData req)
         {
             var listardireccion =   direccionLogic.ListarDireccion();
@@ -29,6 +35,9 @@ namespace Coling.API.Afiliados.Endpoints
             return respuesta;
         }
         [Function("InsertarDireccion")]
+        [OpenApiOperation("insertar", "Direccion", Description = "Sirve para insertar")]
+        [OpenApiRequestBody("application/json", typeof(Direccion),
+           Description = "Modelo")]
         public async Task<HttpResponseData> InserterDireccion([HttpTrigger(AuthorizationLevel.Function,"post", Route = "insertardireccion")] HttpRequestData req)
         {
             try
@@ -50,6 +59,11 @@ namespace Coling.API.Afiliados.Endpoints
             }
         }
         [Function("EliminarDireccion")]
+        [OpenApiOperation("Eliminar", "Direccion", Description = "Sirve para eliminar")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json",
+            bodyType: typeof(void),
+            Description = " eliminara")]
+        [OpenApiParameter(name: "idDireccion", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "El idDireccion")]
         public async Task<HttpResponseData> EliminarDireccion([HttpTrigger(AuthorizationLevel.Function, "get", Route = "eliminardireccion")] HttpRequestData req)
         {
             try
@@ -72,6 +86,10 @@ namespace Coling.API.Afiliados.Endpoints
 
         }
         [Function("EditarDireccion")]
+        [OpenApiOperation("editar", "Direccion", Description = "Sirve para obtener")]
+        [OpenApiRequestBody("application/json", typeof(Direccion),
+           Description = "Modelo")]
+        [OpenApiParameter(name: "idDireccion", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "El idDireccion")]
         public async Task<HttpResponseData> EditarDireccion([HttpTrigger(AuthorizationLevel.Function, "post", Route = "editardireccion")] HttpRequestData req)
         {
             try
@@ -96,6 +114,11 @@ namespace Coling.API.Afiliados.Endpoints
             }
         }
         [Function("ObtenerDireccion")]
+        [OpenApiOperation("obtener", "Direccion", Description = "Sirve para obtener")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json",
+            bodyType: typeof(Direccion),
+            Description = "Mostrara un objeto")]
+        [OpenApiParameter(name: "idDireccion", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "El idDireccion")]
         public async Task<HttpResponseData> ObtenerDireccion([HttpTrigger(AuthorizationLevel.Function, "get", Route = "obtenerdireccion")] HttpRequestData req)
         {
             string ID = req.Query["idDireccion"];

@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using System.Net;
 
 namespace Coling.API.Afiliados.Endpoints
@@ -22,6 +24,10 @@ namespace Coling.API.Afiliados.Endpoints
         }
 
         [Function("ListarTelefonos")]
+        [OpenApiOperation("listar", "Telefono", Description = "Sirve para insertar")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json",
+            bodyType: typeof(List<Telefono>),
+            Description = "Mostrara una lista")]
         public async Task<HttpResponseData> ListarTelefonos([HttpTrigger(AuthorizationLevel.Function, "get",  Route = "listartelefonos")] HttpRequestData req)
         {
             var listartelefono = telefonoLogic.ListarTelefonos();
@@ -30,6 +36,12 @@ namespace Coling.API.Afiliados.Endpoints
             return respuesta;
         }
         [Function("InsertarTelefono")]
+        [OpenApiOperation("insertar", "Telefono", Description = "Sirve para insertar")]
+        [OpenApiRequestBody("application/json", typeof(Telefono),
+           Description = "Modelo")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json",
+            bodyType: typeof(Telefono),
+            Description = "Mostrara El dato insertado")]
         public async Task<HttpResponseData> InsertarTelefono([HttpTrigger(AuthorizationLevel.Function, "post", Route = "insertartelefono")] HttpRequestData req)
         {
             try
@@ -51,6 +63,11 @@ namespace Coling.API.Afiliados.Endpoints
             }
         }
         [Function("EliminarTelefono")]
+        [OpenApiOperation("Eliminar", "Telefono", Description = "Sirve para eliminar")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json",
+            bodyType: typeof(void),
+            Description = " eliminara")]
+        [OpenApiParameter(name: "idTelefono", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "El idTelefono")]
         public async Task<HttpResponseData> EliminarTelefono([HttpTrigger(AuthorizationLevel.Function, "get", Route = "eliminartelefono")] HttpRequestData req)
         {
             try
@@ -73,6 +90,10 @@ namespace Coling.API.Afiliados.Endpoints
 
         }
         [Function("EditarTelefono")]
+        [OpenApiOperation("editar", "Telefono", Description = "Sirve para obtener")]
+        [OpenApiRequestBody("application/json", typeof(Telefono),
+           Description = "Modelo")]
+        [OpenApiParameter(name: "idTelefono", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "El idTelefono")]
         public async Task<HttpResponseData> EditarTelefono([HttpTrigger(AuthorizationLevel.Function, "post", Route = "editarTelefono")] HttpRequestData req)
         {
             try
@@ -97,6 +118,11 @@ namespace Coling.API.Afiliados.Endpoints
             }
         }
         [Function("ObtenerTelefono")]
+        [OpenApiOperation("obtener", "Telefono", Description = "Sirve para obtener")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json",
+            bodyType: typeof(Telefono),
+            Description = "Mostrara un objeto")]
+        [OpenApiParameter(name: "idDireccion", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "El idDireccion")]
         public async Task<HttpResponseData> ObtenerTelefono([HttpTrigger(AuthorizationLevel.Function, "get", Route = "obtenertelefono")] HttpRequestData req)
         {
             string ID = req.Query["idDireccion"];

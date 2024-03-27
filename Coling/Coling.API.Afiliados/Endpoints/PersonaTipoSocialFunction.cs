@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using System.Net;
 
 namespace Coling.API.Afiliados.Endpoints
@@ -21,6 +23,10 @@ namespace Coling.API.Afiliados.Endpoints
         }
 
         [Function("ListarPersonaTipoSocial")]
+        [OpenApiOperation("listar", "PersonaTipoSocial", Description = "Sirve para insertar")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json",
+            bodyType: typeof(List<PersonaTipoSocial>),
+            Description = "Mostrara una lista")]
         public async Task<HttpResponseData> ListarPersonaTipoSocial([HttpTrigger(AuthorizationLevel.Function, "get", Route = "listarpersonatiposocial")] HttpRequestData req)
         {
             var listardireccion = personaTipoSocial.ListarPersonaTipoSocial();
@@ -29,6 +35,12 @@ namespace Coling.API.Afiliados.Endpoints
             return respuesta;
         }
         [Function("InsertarPersonaTipoSocial")]
+        [OpenApiOperation("insertar", "PersonaTipoSocial", Description = "Sirve para insertar")]
+        [OpenApiRequestBody("application/json", typeof(PersonaTipoSocial),
+           Description = "Modelo")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json",
+            bodyType: typeof(PersonaTipoSocial),
+            Description = "Mostrara El dato insertado")]
         public async Task<HttpResponseData> InsertarPersonaTipoSocial([HttpTrigger(AuthorizationLevel.Function, "post", Route = "insertarPersonatiposocial")] HttpRequestData req)
         {
             try
@@ -50,6 +62,11 @@ namespace Coling.API.Afiliados.Endpoints
             }
         }
         [Function("EliminarPersonaTipoSocial")]
+        [OpenApiOperation("Eliminar", "PersonaTipoSocial", Description = "Sirve para eliminar")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json",
+            bodyType: typeof(void),
+            Description = " eliminara")]
+        [OpenApiParameter(name: "idPersonaTiposocial", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "El idPersonaTiposocial")]
         public async Task<HttpResponseData> EliminarPersonaTipoSocial([HttpTrigger(AuthorizationLevel.Function, "get", Route = "eliminarpersonatiposocial")] HttpRequestData req)
         {
             try
@@ -72,6 +89,10 @@ namespace Coling.API.Afiliados.Endpoints
 
         }
         [Function("EditarPersonaTipoSocial")]
+        [OpenApiOperation("editar", "PersonaTipoSocial", Description = "Sirve para obtener")]
+        [OpenApiRequestBody("application/json", typeof(PersonaTipoSocial),
+           Description = "Modelo")]
+        [OpenApiParameter(name: "idPersonaTiposocial", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "El idPersonaTiposocial")]
         public async Task<HttpResponseData> EditarPersonaTipoSocial([HttpTrigger(AuthorizationLevel.Function, "post", Route = "editarpersonatiposocial")] HttpRequestData req)
         {
             try
@@ -96,6 +117,11 @@ namespace Coling.API.Afiliados.Endpoints
             }
         }
         [Function("ObtenerPersonaTipoSocial")]
+        [OpenApiOperation("obtener", "PersonaTipoSocial", Description = "Sirve para obtener")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json",
+            bodyType: typeof(PersonaTipoSocial),
+            Description = "Mostrara un objeto")]
+        [OpenApiParameter(name: "idPersonaTiposocial", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "El idPersonaTiposocial")]
         public async Task<HttpResponseData> ObtenerPersonaTipoSocial([HttpTrigger(AuthorizationLevel.Function, "get", Route = "obtenerpersonatiposocial")] HttpRequestData req)
         {
             string ID = req.Query["idPersonaTiposocial"];
